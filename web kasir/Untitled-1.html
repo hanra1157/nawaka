@@ -1,0 +1,111 @@
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h2>H-STORE</h2>
+      <small>Enterprise Edition</small>
+    </div>
+    <nav>
+      <button onclick="switchTab('pos')" class="nav-btn active" id="btn-pos">🛒 Kasir</button>
+      <button onclick="switchTab('inventory')" class="nav-btn" id="btn-inventory">📦 Inventaris</button>
+      <button onclick="switchTab('reports')" class="nav-btn" id="btn-reports">📊 Laporan</button>
+    </nav>
+    <div class="user-footer">
+      <p><strong>M. Hanif Amrullah</strong></p>
+      <span>Entrepreneur</span>
+    </div>
+  </aside>
+
+  <main class="content">
+    <!-- TAB KASIR -->
+    <section id="tab-pos" class="tab-content">
+      <div class="pos-layout">
+        <div class="products-area">
+          <div class="header-action">
+            <input type="text" id="search-input" placeholder="Cari barang..." onkeyup="renderProducts()">
+          </div>
+          <div id="product-grid" class="grid"></div>
+        </div>
+        
+        <div class="cart-area">
+          <h3>Keranjang Belanja</h3>
+          <div id="cart-items-list">
+            <!-- Items injected here -->
+          </div>
+          <div class="cart-footer">
+            <div class="total-row">
+              <span>Total Tagihan:</span>
+              <span id="grand-total">Rp 0</span>
+            </div>
+            <button class="btn-checkout" onclick="openPaymentModal()">PROSES BAYAR</button>
+            <button class="btn-clear" onclick="clearCart()">Kosongkan</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB INVENTARIS -->
+    <section id="tab-inventory" class="tab-content hidden">
+      <div class="card">
+        <h3>Tambah Barang Baru</h3>
+        <form onsubmit="handleNewProduct(event)" class="form-inline">
+          <input type="text" id="inv-name" placeholder="Nama Produk" required>
+          <input type="number" id="inv-price" placeholder="Harga (Rp)" required>
+          <button type="submit" class="btn-add">Simpan Produk</button>
+        </form>
+      </div>
+      
+      <table class="data-table">
+        <thead>
+          <tr><th>ID</th><th>Nama Produk</th><th>Harga</th><th>Aksi</th></tr>
+        </thead>
+        <tbody id="inventory-table-body"></tbody>
+      </table>
+    </section>
+
+    <!-- TAB LAPORAN -->
+    <section id="tab-reports" class="tab-content hidden">
+      <div class="dashboard-stats">
+        <div class="stat-box">
+          <span>Pesanan Hari Ini</span>
+          <h1 id="stat-count">0</h1>
+        </div>
+        <div class="stat-box accent">
+          <span>Omzet Hari Ini</span>
+          <h1 id="stat-revenue">Rp 0</h1>
+        </div>
+      </div>
+      
+      <h3>Riwayat Transaksi Terakhir</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Waktu</th><th>ID Transaksi</th><th>Total Penjualan</th></tr>
+        </thead>
+        <tbody id="sales-history-body"></tbody>
+      </table>
+      <button onclick="resetAllData()" class="btn-danger">Hapus Semua Data (Reset)</button>
+    </section>
+  </main>
+
+  <!-- MODAL PEMBAYARAN -->
+  <div id="modal-payment" class="modal hidden">
+    <div class="modal-content">
+      <h2>Pembayaran</h2>
+      <div class="pay-summary">
+        <p>Total yang harus dibayar:</p>
+        <h1 id="pay-total-title">Rp 0</h1>
+      </div>
+      <div class="input-group">
+        <label>Uang Tunai (Cash)</label>
+        <input type="number" id="cash-input" oninput="calculateChange()" placeholder="Masukkan jumlah uang...">
+      </div>
+      <div class="change-info">
+        <span>Kembalian:</span>
+        <strong id="change-amount">Rp 0</strong>
+      </div>
+      <div class="modal-buttons">
+        <button onclick="closePaymentModal()" class="btn-cancel">Batal</button>
+        <button onclick="finalizeTransaction()" class="btn-confirm">Cetak Struk & Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
